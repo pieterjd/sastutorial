@@ -260,7 +260,26 @@ proc optmodel;
  print x;
  quit;
 run;
- 
+/*test on conditional constraint on first toy problem*/
+
+proc optmodel;
+ /*wheat and barley vars*/
+ var wheat, barley;
+/*objective*/
+ maximize profit=110*1.3*wheat + 30*2*barley;
+ /*constraints*/
+ /*expense constraint*/
+ con expense:120*wheat + 210*barley <= 15000;
+ con storage:110*wheat+30*barley <= 4000;
+ con area: wheat + barley <= 75;
+ /*binary variable is 1 if wheat != barley else 0*/
+ var y binary;
+ constraint equality:wheat - 10000000*y = barley;
+ solve with milp;
+ /*print solution*/
+ print wheat barley y;
+quit;
+run;
  
 
 
